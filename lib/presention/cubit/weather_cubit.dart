@@ -104,7 +104,7 @@ class WeatherCubit extends Cubit<WeatherCubitState> {
   late List<String> cities;
   bool isSearchFelidNotEmpty = false;
   bool isCitesValidate = false;
-  void checkCitesValidate(String? value, bool run) {
+  void checkCitesValidate(String? value, bool liveCheck) {
     if (value != null && value.isNotEmpty) {
       isSearchFelidNotEmpty = true;
       emit(TypingCountriesName());
@@ -113,7 +113,7 @@ class WeatherCubit extends Cubit<WeatherCubitState> {
       emit(ClearTextFelid());
     }
 
-    if (run) {
+    if (liveCheck) {
       if (value!.contains(',')) {
         value = value.trim();
         // if write by mistake , in first
@@ -194,6 +194,7 @@ class WeatherCubit extends Cubit<WeatherCubitState> {
 
   List<String> possibleExpectedDays = [];
   List<WeatherAppModel> allExpectedWeather = [];
+  var cityName = '';
   void getExpectedWeatherDataIn5days() {
     if (isLocationPermission && isInternetConnection && isGps) {
       emit(LoadingCurrentLocationWeather());
@@ -204,23 +205,20 @@ class WeatherCubit extends Cubit<WeatherCubitState> {
                 long: position.longitude.toString())
             .then((value) {
           value.fold(
-            (l) => emit(const FelidLoadedCurrentLocationWeather(
+            (exception) => emit(const FelidLoadedCurrentLocationWeather(
                 errorMsg: "felid load ExpectedWeather ")),
             (response) {
+              cityName = response.city!.name!;
               response.list?.map((weather) {
                 allExpectedWeather
                     .add(WeatherAppModel.fromMap(weather.toJson()));
               }).toList();
-              allExpectedWeather
-                  .map((e) => e.cityName = response.city!.name)
-                  .toList();
               emit(SucceedLoadedCurrentLocationWeather());
               possibleExpectedDays = allExpectedWeather
                   .map((e) => e.data.toString().split(" ")[0])
                   .toSet()
                   .toList();
               selectedDey = possibleExpectedDays.first;
-              // print(" sss " + selectedDey);
               choseForecastWeatherInfoIn(selectedDey);
             },
           );
@@ -260,6 +258,4 @@ class WeatherCubit extends Cubit<WeatherCubitState> {
     possibleExpectedDays = [];
     emit(ClearCurrentWeatherData());
   }
-
- 
 }

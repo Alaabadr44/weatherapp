@@ -27,8 +27,8 @@ class CityScreen extends StatelessWidget {
           builder: (context, state) {
             WeatherCubit cubit = WeatherCubit.get(context);
             List<WeatherAppModel?> x = cubit.selectedWeatherInByDay;
-            List<String> dayes = cubit.possibleExpectedDays;
-            if (x.isEmpty && dayes.isEmpty) {
+            List<String> days = cubit.possibleExpectedDays;
+            if (x.isEmpty && days.isEmpty) {
               return const Center(
                 child: CircularProgressIndicator(color: kYellow),
               );
@@ -37,6 +37,15 @@ class CityScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 80.h),
+                  Center(
+                    child: Text(
+                      cubit.cityName,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 10.h),
                   SizedBox(height: 20.h),
                   SizedBox(
@@ -46,16 +55,16 @@ class CityScreen extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        itemCount: dayes.length,
+                        itemCount: days.length,
                         separatorBuilder: (BuildContext context, int index) {
                           return SizedBox(width: 4.w);
                         },
                         itemBuilder: (BuildContext context, int index) {
                           return DayButtonWidget(
-                            day: designDey(dayes[index]),
-                            isSelected: dayes[index] == cubit.selectedDey,
+                            day: designDey(days[index]),
+                            isSelected: days[index] == cubit.selectedDey,
                             onPressed: () => cubit.choseForecastWeatherInfoIn(
-                              dayes[index],
+                              days[index],
                             ),
                           );
                         },
@@ -94,4 +103,3 @@ class CityScreen extends StatelessWidget {
     );
   }
 }
-
