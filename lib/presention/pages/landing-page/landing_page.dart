@@ -76,7 +76,8 @@ class LandingPage extends StatelessWidget {
                 WeatherCubit cubit = WeatherCubit.get(context);
                 return TextButton(
                   onPressed: () {
-                    // cubit.getExpectedWeatherDataIn5days();
+                    cubit.onInit();
+                    cubit.getExpectedWeatherDataIn5days();
                     Navigator.of(context)
                         .pushNamed(CityScreen.routeName)
                         .then((value) {

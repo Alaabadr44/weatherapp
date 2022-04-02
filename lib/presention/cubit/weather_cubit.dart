@@ -186,9 +186,6 @@ class WeatherCubit extends Cubit<WeatherCubitState> {
               },
             ),
           );
-    } else {
-      emit(const FelidLoadedWeatherInfoForCountries(
-          errorMsg: "loading felid ....  "));
     }
   }
 

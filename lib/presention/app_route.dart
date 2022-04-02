@@ -25,8 +25,8 @@ class AppRoute {
 
       case LandingPage.routeName:
         return MaterialPageRoute(
-          builder: (_) =>  BlocProvider<WeatherCubit>.value(
-            value: cubit..onInit(),
+          builder: (_) =>  BlocProvider<WeatherCubit>(
+            create:(_)=> cubit,
             child: const LandingPage(),
           ),
         );
